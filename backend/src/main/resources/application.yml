@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+llm:
+  # Clé API lue depuis la variable d'environnement (JAMAIS commitée).
+  # Si vide -> le backend démarre en mode MOCK (données de démonstration).
+  api-key: ${ANTHROPIC_API_KEY:}
+  model: ${LLM_MODEL:claude-sonnet-4-6}
+  base-url: https://api.anthropic.com
+  max-tokens: 1024
+  anthropic-version: "2023-06-01"
+
+logging:
+  level:
+    com.goodmaps.backend: INFO

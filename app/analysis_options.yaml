@@ -1,0 +1,8 @@
+# Règles de lint pour garantir un code propre et maintenable (critère du barème).
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_const_constructors: true
+    prefer_final_locals: true
+    avoid_print: true

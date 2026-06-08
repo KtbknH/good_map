@@ -1,0 +1,9 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+.idea/
+*.iml
+.vscode/
+.DS_Store
+# Secret : clé API jamais commitée
+.env

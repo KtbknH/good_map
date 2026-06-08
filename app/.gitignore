@@ -1,0 +1,19 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Système
+.DS_Store
+
+# Secrets (clé API jamais commitée — voir README / backend)
+.env
+*.env.local
