@@ -42,18 +42,58 @@ src/main/java/com/goodmaps/backend/
 - **Maven 3.9+**
 
 ## 🚀 Démarrage
+
+Le backend choisit son moteur via `llm.provider` (variable `LLM_PROVIDER`) :
+**openai** (Groq / Gemini / OpenRouter / Ollama), **anthropic** (Claude) ou
+**mock**. Par défaut : `openai` pointant sur **Groq** (gratuit).
+
 ```bash
-cd goodmaps-backend
+cd backend
 
-# Option A — mode MOCK (aucune clé, démarre direct)
-mvn spring-boot:run
+# Mode MOCK (aucune clé, démarre direct)
+LLM_PROVIDER=mock mvn spring-boot:run
 
-# Option B — mode réel (Claude)
-export ANTHROPIC_API_KEY=sk-ant-votre-cle      # Windows : set ANTHROPIC_API_KEY=...
-export LLM_MODEL=claude-sonnet-4-6             # optionnel
+# Mode réel : voir « Tester gratuitement » juste en dessous
 mvn spring-boot:run
 ```
 Le serveur écoute sur **http://localhost:8080**.
+
+## 🆓 Tester gratuitement (sans payer de clé)
+
+`OpenAiCompatibleSuggestionService` fonctionne avec tout fournisseur compatible
+OpenAI. Choisis-en un, exporte les variables, puis `mvn spring-boot:run` :
+
+**Groq** — gratuit, sans carte (défaut). Clé : https://console.groq.com
+```bash
+export LLM_API_KEY=gsk_xxx
+mvn spring-boot:run
+```
+
+**Google Gemini** — gratuit, sans carte. Clé : https://aistudio.google.com
+```bash
+export LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
+export LLM_MODEL=gemini-2.0-flash
+export LLM_API_KEY=AIzaxxx
+mvn spring-boot:run
+```
+
+**Ollama** — local, aucune clé. Après `ollama pull llama3.2` :
+```bash
+export LLM_BASE_URL=http://localhost:11434/v1
+export LLM_MODEL=llama3.2
+mvn spring-boot:run
+```
+
+**Claude** — payant :
+```bash
+export LLM_PROVIDER=anthropic
+export LLM_BASE_URL=https://api.anthropic.com
+export LLM_MODEL=claude-sonnet-4-6
+export LLM_API_KEY=sk-ant-xxx
+mvn spring-boot:run
+```
+> Au démarrage, le log indique le fournisseur actif (ou « MOCK » si aucune clé).
+> Quota gratuit dépassé → l'API renvoie HTTP 429, sans facturation.
 
 ### Tester l'API
 ```bash

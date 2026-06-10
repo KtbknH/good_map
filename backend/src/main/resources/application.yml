@@ -2,14 +2,49 @@ server:
   port: 8080
 
 llm:
-  # Clé API lue depuis la variable d'environnement (JAMAIS commitée).
-  # Si vide -> le backend démarre en mode MOCK (données de démonstration).
-  api-key: ${ANTHROPIC_API_KEY:}
-  model: ${LLM_MODEL:claude-sonnet-4-6}
-  base-url: https://api.anthropic.com
+  # Fournisseur : openai (Groq / Gemini / OpenRouter / Ollama) | anthropic | mock
+  # Par defaut : openai pointe sur Groq (GRATUIT, sans carte bancaire).
+  provider: ${LLM_PROVIDER:openai}
+
+  # Cle du fournisseur actif (JAMAIS commitee).
+  # Lit LLM_API_KEY, sinon ANTHROPIC_API_KEY, sinon vide -> MOCK (hors Ollama local).
+  api-key: ${LLM_API_KEY:${ANTHROPIC_API_KEY:}}
+
+  # URL + modele du fournisseur (valeurs par defaut = Groq).
+  base-url: ${LLM_BASE_URL:https://api.groq.com/openai/v1}
+  model: ${LLM_MODEL:llama-3.3-70b-versatile}
+
   max-tokens: 1024
   anthropic-version: "2023-06-01"
 
 logging:
   level:
     com.goodmaps.backend: INFO
+
+# ---------------------------------------------------------------------------
+# Exemples prets a l'emploi (a definir AVANT `mvn spring-boot:run`) :
+#
+#  GROQ (gratuit, sans carte) — par defaut :
+#    export LLM_PROVIDER=openai
+#    export LLM_BASE_URL=https://api.groq.com/openai/v1
+#    export LLM_MODEL=llama-3.3-70b-versatile
+#    export LLM_API_KEY=gsk_xxx           # cle gratuite : https://console.groq.com
+#
+#  GOOGLE GEMINI (gratuit, sans carte) :
+#    export LLM_PROVIDER=openai
+#    export LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
+#    export LLM_MODEL=gemini-2.0-flash
+#    export LLM_API_KEY=AIzaxxx           # cle gratuite : https://aistudio.google.com
+#
+#  OLLAMA (local, AUCUNE cle) :
+#    export LLM_PROVIDER=openai
+#    export LLM_BASE_URL=http://localhost:11434/v1
+#    export LLM_MODEL=llama3.2
+#    (ne pas definir LLM_API_KEY)
+#
+#  ANTHROPIC / CLAUDE (payant) :
+#    export LLM_PROVIDER=anthropic
+#    export LLM_BASE_URL=https://api.anthropic.com
+#    export LLM_MODEL=claude-sonnet-4-6
+#    export LLM_API_KEY=sk-ant-xxx
+# ---------------------------------------------------------------------------

@@ -22,7 +22,8 @@ Future<void> main() async {
         // À remplacer par BackendAiSuggestionService une fois le backend
         // Spring Boot déployé (la clé API reste alors côté serveur).
         Provider<AiSuggestionService>(
-          create: (_) => MockAiSuggestionService(),
+          // create: (_) => MockAiSuggestionService(),
+          create: (_) => BackendAiSuggestionService(baseUrl: 'http://localhost:8080'),
         ),
         ChangeNotifierProvider(
           create: (_) => OnboardingProvider(
